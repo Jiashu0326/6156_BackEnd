@@ -1,7 +1,7 @@
 from flask import Flask, Response, request
 from datetime import datetime
 import json
-from columbia_student_resource import ColumbiaStudentResource
+from teams_resource import TeamsResources
 from flask_cors import CORS
 
 # Create the Flask application object.
@@ -17,7 +17,7 @@ CORS(app)
 def get_health():
     t = str(datetime.now())
     msg = {
-        "name": "F22-Starter-Microservice",
+        "name": "NBA_teams_microservice",
         "health": "Good",
         "at time": t
     }
@@ -28,10 +28,22 @@ def get_health():
     return result
 
 
-@app.route("/api/students/<uni>", methods=["GET"])
-def get_student_by_uni(uni):
+@app.route("/api/teams_info/<id>", methods=["GET"])
+def team_info(id):
 
-    result = ColumbiaStudentResource.get_by_key(uni)
+    result = TeamsResources.get_teams_info(id)
+
+    if result:
+        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+    else:
+        rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+
+    return rsp
+
+@app.route("/api/teams_games/<id>", methods=["GET"])
+def team_games(id):
+
+    result = TeamsResources.get_teams_games(id)
 
     if result:
         rsp = Response(json.dumps(result), status=200, content_type="application.json")
