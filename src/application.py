@@ -28,7 +28,20 @@ def get_health():
     return result
 
 
-@app.route("/api/teams_info/<id>", methods=["GET"])
+@app.route("/api/teams", methods=["GET"])
+def team_all():
+
+    result = TeamsResources.get_teams()
+
+    if result:
+        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+    else:
+        rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+
+    return rsp
+
+
+@app.route("/api/teams/<id>", methods=["GET"])
 def team_info(id):
 
     result = TeamsResources.get_teams_info(id)
@@ -53,5 +66,5 @@ def team_games(id):
     return rsp
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5011)
+    app.run(host="localhost", port=5011)
 

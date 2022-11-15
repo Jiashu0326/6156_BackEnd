@@ -27,6 +27,17 @@ class TeamsResources:
         return conn
 
     @staticmethod
+    def get_teams():
+
+        sql = "select * from f22_databases.Team"
+        conn = TeamsResources._get_connection()
+        cur = conn.cursor()
+        res = cur.execute(sql)
+        result = cur.fetchall()
+
+        return result
+
+    @staticmethod
     def get_teams_info(id):
 
         sql = "select * from f22_databases.Team where Team_ID =  %s"
